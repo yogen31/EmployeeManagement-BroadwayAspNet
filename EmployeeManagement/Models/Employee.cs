@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EmployeeManagement.Models
@@ -16,6 +17,8 @@ namespace EmployeeManagement.Models
         //Many to one mapping
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
-        
+        public string UserId { get; set; }
+        public IdentityUser IdentityUser { get; set; }
+
     }
 }

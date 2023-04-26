@@ -31,10 +31,10 @@ namespace EmployeeManagement.Controllers
 
             return View();
         }
-        public IActionResult GetAllEmployee()
+        public async Task<IActionResult> GetAllEmployee()
         {
-            List<Employee> employees = _applicationDbContext.Employee.
-                Include(x => x.Department).ToList();
+            List<Employee> employees = await _applicationDbContext.Employee.
+                Include(x => x.Department).ToListAsync();
             return View(employees);
         }
         public IActionResult GetEmployeeById(int id)

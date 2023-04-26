@@ -13,7 +13,10 @@ UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDatabaseString")
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
+//redirect to login page if not logedin
+builder.Services.ConfigureApplicationCookie(configure =>
+configure.LoginPath= "/Login/LoginUser"
+); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
