@@ -81,10 +81,6 @@ namespace EmployeeManagement.Migrations
                     b.Property<double>("Salary")
                         .HasColumnType("float");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");

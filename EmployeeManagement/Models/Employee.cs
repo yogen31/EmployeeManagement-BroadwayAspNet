@@ -17,7 +17,7 @@ namespace EmployeeManagement.Models
         //Many to one mapping
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
-        public string UserId { get; set; }
+        public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
 
     }

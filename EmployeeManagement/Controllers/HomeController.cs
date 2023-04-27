@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Data;
 using EmployeeManagement.DTO;
 using EmployeeManagement.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -12,11 +13,17 @@ namespace EmployeeManagement.Controllers
         private readonly ILogger<HomeController> _logger;
         //Accessing Db Context to interact with database in entity framework
         private readonly ApplicationDbContext _applicationDbContext;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         public HomeController(ILogger<HomeController> logger,
-            ApplicationDbContext applicationDbContext)
+            ApplicationDbContext applicationDbContext,
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _applicationDbContext = applicationDbContext;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -28,13 +35,33 @@ namespace EmployeeManagement.Controllers
         {
             ViewBag.DepartmentList = _applicationDbContext.Department.
                 ToList();
-
+            ViewBag.UserList = _applicationDbContext.Users.ToList();
             return View();
         }
         public async Task<IActionResult> GetAllEmployee()
         {
-            List<Employee> employees = await _applicationDbContext.Employee.
-                Include(x => x.Department).ToListAsync();
+            //get current loged in user
+            var logedInUser=await _userManager.GetUserAsync(User);
+            //get role of logged in user
+            var userRole = await _userManager.GetRolesAsync(logedInUser);
+            List<Employee> employees = new List<Employee>();
+            if(userRole != null)
+            {
+                //staff can only see their details
+                if (userRole.FirstOrDefault() == "Staff")
+                {
+                    employees = await _applicationDbContext.Employee
+                        .Where(x => x.IdentityUserId == logedInUser.Id)
+                        .Include(x => x.Department).ToListAsync();
+                }
+
+                //admin can see all the employees details
+                else if (userRole.FirstOrDefault() == "Admin")
+                {
+                    employees = await _applicationDbContext.Employee
+                        .Include(x => x.Department).ToListAsync();
+                }
+            }
             return View(employees);
         }
         public IActionResult GetEmployeeById(int id)
