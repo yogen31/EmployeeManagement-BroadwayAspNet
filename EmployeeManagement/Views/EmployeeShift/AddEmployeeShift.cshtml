@@ -1,0 +1,119 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model EmployeeManagement.Models.EmployeeShift
+<h1>Add Employee Shifts</h1>
+<form action="AddEmployeeShiftDetails">
+    <div class="form-group">
+        <label>Start Time</label>
+        <input id="start-time" type="time" class="form-control"
+               asp-for="StartTime">
+    </div>
+    <div class="form-group">
+        <label>End Time</label>
+        <input id="end-time" type="time" class="form-control"
+               asp-for="EndTime">
+    </div>
+    <div class="form-group">
+        <label>Total Time</label>
+        <input id="total-time" type="number" class="form-control"
+               asp-for="TotalTime">
+    </div>
+    <div class="form-group">
+        <label>Select User</label>
+        <select class="form-control" asp-for="EmployeeId1">
+
+            <option>select user</option>
+            @foreach (var item in ViewBag.EmployeeList)
+            {
+                <option value="@item.Id">
+                    @item.Name
+                </option>
+            }
+
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>
+    //getting values By Id
+    var startTime = document.getElementById("start-time");
+    var endTime = document.getElementById("end-time");
+    var totalTime = document.getElementById("total-time");
+
+    //add event for the change of start time and end time
+
+    //everytime when start time and end time gets change it trigges the event which
+    //calls the onTimeUpdate function
+    startTime.addEventListener('input', onTimeUpdate);
+    endTime.addEventListener('input', onTimeUpdate);
+
+    function onTimeUpdate() {
+        debugger;
+        //get value from start time
+        var startTimeValue=startTime.value;
+        var endTimeValue=endTime.value;
+        if(startTimeValue && endTimeValue){
+            //separate the time with the help of split that breaks the time into parts with reference to :
+            //for example if time is 08:30 then O index will be for 08 and 1 index will be for 30
+            var startTimeSplit=startTimeValue.split(":");
+            var endTimeSplit=endTimeValue.split(":");
+
+            //converting hours into minutes
+            var startTimeMinutes = parseInt(startTimeSplit[0]) * 60 + parseInt(startTimeSplit[1]);
+            var endTimeMinutes = parseInt(endTimeSplit[0]) * 60 + parseInt(endTimeSplit[1]);
+
+            //get minute difference from end time and start time
+            var minuteDifference=endTimeMinutes-startTimeMinutes;
+            //converting minute difference to hours and assigning it to total time
+            totalTime.value=minuteDifference/60;
+
+        }
+        else{
+            //if any one of start time and end time doesnot have value then put totaltime as empty
+            totalTime.value='';
+        }
+
+    }
+
+
+</script>
+
+
+
+
+
+
+
+@*<script>
+    //get the input fields
+    var startTime=document.getElementById("start-time");
+    var endTime=document.getElementById("end-time");
+    var totalTime=document.getElementById("total-time");
+
+    //add event listener
+    startTime.addEventListener('input',ontimeupdate);
+    endTime.addEventListener('input', ontimeupdate);
+
+    function ontimeupdate(){
+        debugger;
+        var startTimeValue=startTime.value;
+        var endTimeValue = endTime.value;
+        if (startTimeValue && endTimeValue){
+            var startSplit=startTimeValue.split(":");
+            var endSplit=endTimeValue.split(":");
+
+            var startMinutes=parseInt(startSplit[0]) *60+ parseInt(startSplit[1]);
+            var endMinutes = parseInt(endSplit[0]) * 60 + parseInt(endSplit[1]);
+            var totlTimeMinutes=endMinutes-startMinutes;
+            totalTime.value = totlTimeMinutes / 60;
+        } else {
+            totalTime.value = '';
+        }
+    }
+
+</script>*@
+

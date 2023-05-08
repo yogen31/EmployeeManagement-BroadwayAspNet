@@ -28,6 +28,8 @@ namespace EmployeeManagement.Controllers
 
         public IActionResult Index()
         {
+            var employeeDepartment =
+                _applicationDbContext.EmployeeDepartment.ToList();
             return View();
         }
 

@@ -4,6 +4,7 @@ using EmployeeManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230503074213_Employee Working Shift Total")]
+    partial class EmployeeWorkingShiftTotal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,9 +118,6 @@ namespace EmployeeManagement.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("EmployeeId1")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
@@ -132,35 +132,6 @@ namespace EmployeeManagement.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeShift");
-                });
-
-            modelBuilder.Entity("EmployeeManagement.Models.EmployeeShiftLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CheckInTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckOutTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmployeeShiftId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("EmployeeShiftId");
-
-                    b.ToTable("EmployeeShiftLog");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -391,21 +362,6 @@ namespace EmployeeManagement.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("EmployeeManagement.Models.EmployeeShiftLog", b =>
-                {
-                    b.HasOne("EmployeeManagement.Models.Employee", "Employee")
-                        .WithMany("EmployeeShiftLogs")
-                        .HasForeignKey("EmployeeId");
-
-                    b.HasOne("EmployeeManagement.Models.EmployeeShift", "EmployeeShift")
-                        .WithMany("EmployeeShiftLogs")
-                        .HasForeignKey("EmployeeShiftId");
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("EmployeeShift");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -460,16 +416,6 @@ namespace EmployeeManagement.Migrations
             modelBuilder.Entity("EmployeeManagement.Models.Department", b =>
                 {
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("EmployeeManagement.Models.Employee", b =>
-                {
-                    b.Navigation("EmployeeShiftLogs");
-                });
-
-            modelBuilder.Entity("EmployeeManagement.Models.EmployeeShift", b =>
-                {
-                    b.Navigation("EmployeeShiftLogs");
                 });
 #pragma warning restore 612, 618
         }

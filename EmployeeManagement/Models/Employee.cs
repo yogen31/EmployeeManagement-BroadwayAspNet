@@ -19,6 +19,8 @@ namespace EmployeeManagement.Models
         public Department Department { get; set; }
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+        public List<EmployeeShiftLog> EmployeeShiftLogs { get; set; }
+
 
     }
 }
